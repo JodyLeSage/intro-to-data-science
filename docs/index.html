@@ -97,6 +97,19 @@
 							</tr>
 						</tbody>
 					</table>
+					<aside class="notes">
+						For this example, let's focus on the weather forecast.  On any given day, a forecast is made up of all kinds of different information.  In data science, we call each piece of information for a given record a feature.  Now we'll look at some potential features that we can extract from a weather forecast and talk about some of the issues you might find when you put together a data set.
+						
+						1. Sometimes your data is qualitative like a daily outlook.  Algorithms almost always iterate over quantitative data, so this "text" needs to be converted to a numeric value to be of any use, but that task is usually quite difficult.  You will often run into issues with inconsistent capitalization, typos, and other language processing problems.
+						
+						2. Temperature, great, a numeric feature!  However, temperature is what we call a continuous feature.  All that means is that this feature exists on a continuum.  The temperature can be anywere from absolute zero to infinity.  The other type of variable is called a discrete variable - that's a variable that can only hold one of a number of preset values like 0, 1, or 2.  Continuous variables can be an issue for your model because typically when training your model, there will be very few data points with very high or very low values.  This leads to your model not being very good when a continuous variable is at an extreme. To solve this issue there are a few strategies.  For one, you can divide your data into "bins."  Another solution, especially when the value is between 0 and positive infinity, is to divide them all by the largest value (that isn't an outlier), which effectively scales them all between 0 and 1.  This is called "normalizing" the feature.
+						
+						3.  Humidity here is an example of a normalized feature.  You can see the absolute value, there on the right, which actually measures how much water is present in the air.  You rarely see that in a forecast, though; you see the relative humidity, which is the absolute humidity divided by the maximum value it could be for the current temperature.  For this feature, I claim that it maybe isn't very useful to measure.  Sure, some people look at the humidity when they read a weather forecast, but I'd say not many people use it to decide whether or not to go to my park.  This is something I could test by looking at the correlation between humidity and park attendance.
+						
+						4.  Atmospheric pressure is a perfect example of a feature that can come in many different units.  Sometimes your data comes from multiple sources (weather stations, for example) and you'll need to convert some of your data so all your instances are in the same units.  Pressure also demonstrates where that "Expertise" section of that venn diagram comes from.  If you do a little research into weather science, you will find that when pressure falls, weather tends to worsen and when it rises, weather improves.  So instead of the literal pressure value, maybe we want our feature to be the change or "delta" +/- from the day before.
+						
+						5.  Without looking it up online, does anyone actually know what the dew point is?  (It's the temperature at which water evaporates at the same rate that it condenses.  It turns out, dew point can actually be calculated from the temperature and pressure!  So you might have more features, but you actually don't have any additional information.  As long has you have both temperature and pressure, adding dew point as a feature will not improve your model.
+					</aside>
 				</section>
             </div>
         </div>
