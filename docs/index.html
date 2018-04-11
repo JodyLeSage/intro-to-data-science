@@ -39,78 +39,78 @@
                 <section>
                     <img data-src="img/Data_Science_VD.png" style="background:white; border:none box-shadow:none"/>
                     <p>source: Drew Conway</p>
-					<aside class="notes">
-						Instead of an outline for this talk, I'd like to show you this venn diagram from Drew Conway, notable data scientist.  I haven't met many of you, but I imagine most of you fit somewhere in this "Hacking Skills" circle.  My goal for this talk is to cover some math and statistics to steer you away from this "Danger Zone."  At the same time, I know statistics isn't everyone's strong suit. Basically I'm hoping to give you some hands-on demos that will improve your intuition about how to approach a data science problem and that will hopefully steer you towards these data science and machine learning sections.
-					</aside>
+                    <aside class="notes">
+                        Instead of an outline for this talk, I'd like to show you this venn diagram from Drew Conway, notable data scientist.  I haven't met many of you, but I imagine most of you fit somewhere in this "Hacking Skills" circle.  My goal for this talk is to cover some math and statistics to steer you away from this "Danger Zone."  At the same time, I know statistics isn't everyone's strong suit. Basically I'm hoping to give you some hands-on demos that will improve your intuition about how to approach a data science problem and that will hopefully steer you towards these data science and machine learning sections.
+                    </aside>
                 </section>
-				
-				<section data-markdown data-separator-notes="^Note:">
-					## The Classification Problem
-					
-					Note:
-					There are many types of problems you can solve with data science, but this talk is only going to focus on one: the classification problem.  For those of you who are not already familiar with it, you're essentially trying to predict which label should be applied to a piece of data based on other piece of data you've seen in the past. The classic example is, of course, image recognition.  You show an angorithm 1000 pictures of cats and 1000 pictures of dogs - this is called the learning phase. Then you take a new picture of an animal and you ask your algorithm "is this a picture of a cat or a dog?" - this is called the prediction phase.  And now you hope your algorithm can correctly label the pictures.
-				</section>
-				
-				<section>
-					<img data-src="img/Theme_Park.jpg"/>
-					<aside class="notes">
-						So let's explore how we take that first step from having a problem to having data.  Let's say you own an amusement park and you notice that some days you have a high number of visitors to your park and on other days you only have a few.  You know it's good for customer satisfaction and the bottom line to have more employees selling souvenirs and food when the park is busy, but if you have the park fully staffed when the number of customers is low, you aren't able to turn a profit because your payroll cost is too high.  Wouldn't it be great if you could predict if you were going to have many or few customers on any given day?
-						
-						What information do you think you could use to predict park attendance?
-					</aside>
-				</section>
-				
-				<section>
-					<table>
-						<thead>
-							<tr>
-								<th>Feature</th>
-								<th>Sample Value</th>
-								<th>Issues</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="fragment" data-fragment-index="0">
-								<td>Outlook</td>
-								<td>Partly Cloudy</td>
-								<td>Non-numeric</td>
-							</tr>
-							<tr class="fragment" data-fragment-index="1">
-								<td>Temperature</td>
-								<td>25°C</td>
-								<td>Continuous</td>
-							</tr>
-							<tr class="fragment" data-fragment-index="2">
-								<td>Humidity</td>
-								<td>95%, 25g/m³</td>
-								<td>Usefulness?</td>
-							</tr>
-							<tr class="fragment" data-fragment-index="3">
-								<td>Atmospheric Pressure</td>
-								<td>1016mb/hPa, 14.7psi, 30in. Hg, 762.1mmHg/Torr</td>
-								<td>Units, More useful as a change over time (Δ) </td>
-							</tr>
-							<tr class="fragment" data-fragment-index="4">
-								<td>Dew Point</td>
-								<td>17°C</td>
-								<td>Tight correlation to other features</td>
-							</tr>
-						</tbody>
-					</table>
-					<aside class="notes">
-						For this example, let's focus on the weather forecast.  On any given day, a forecast is made up of all kinds of different information.  In data science, we call each piece of information for a given record a feature.  Now we'll look at some potential features that we can extract from a weather forecast and talk about some of the issues you might find when you put together a data set.
-						
-						1. Sometimes your data is qualitative like a daily outlook.  Algorithms almost always iterate over quantitative data, so this "text" needs to be converted to a numeric value to be of any use, but that task is usually quite difficult.  You will often run into issues with inconsistent capitalization, typos, and other language processing problems.
-						
-						2. Temperature, great, a numeric feature!  However, temperature is what we call a continuous feature.  All that means is that this feature exists on a continuum.  The temperature can be anywere from absolute zero to infinity.  The other type of variable is called a discrete variable - that's a variable that can only hold one of a number of preset values like 0, 1, or 2.  Continuous variables can be an issue for your model because typically when training your model, there will be very few data points with very high or very low values.  This leads to your model not being very good when a continuous variable is at an extreme. To solve this issue there are a few strategies.  For one, you can divide your data into "bins."  Another solution, especially when the value is between 0 and positive infinity, is to divide them all by the largest value (that isn't an outlier), which effectively scales them all between 0 and 1.  This is called "normalizing" the feature.
-						
-						3.  Humidity here is an example of a normalized feature.  You can see the absolute value, there on the right, which actually measures how much water is present in the air.  You rarely see that in a forecast, though; you see the relative humidity, which is the absolute humidity divided by the maximum value it could be for the current temperature.  For this feature, I claim that it maybe isn't very useful to measure.  Sure, some people look at the humidity when they read a weather forecast, but I'd say not many people use it to decide whether or not to go to my park.  This is something I could test by looking at the correlation between humidity and park attendance.
-						
-						4.  Atmospheric pressure is a perfect example of a feature that can come in many different units.  Sometimes your data comes from multiple sources (weather stations, for example) and you'll need to convert some of your data so all your instances are in the same units.  Pressure also demonstrates where that "Expertise" section of that venn diagram comes from.  If you do a little research into weather science, you will find that when pressure falls, weather tends to worsen and when it rises, weather improves.  So instead of the literal pressure value, maybe we want our feature to be the change or "delta" +/- from the day before.
-						
-						5.  Without looking it up online, does anyone actually know what the dew point is?  (It's the temperature at which water evaporates at the same rate that it condenses.)  It turns out, dew point can actually be calculated from the temperature and pressure!  So you might have more features, but you actually don't have any additional information.  As long has you have both temperature and pressure, adding dew point as a feature will not improve your model.
-					</aside>
-				</section>
+                
+                <section data-markdown data-separator-notes="^Note:">
+                    ## The Classification Problem
+                    
+                    Note:
+                    There are many types of problems you can solve with data science, but this talk is only going to focus on one: the classification problem.  For those of you who are not already familiar with it, you're essentially trying to predict which label should be applied to a piece of data based on other piece of data you've seen in the past. The classic example is, of course, image recognition.  You show an angorithm 1000 pictures of cats and 1000 pictures of dogs - this is called the learning phase. Then you take a new picture of an animal and you ask your algorithm "is this a picture of a cat or a dog?" - this is called the prediction phase.  And now you hope your algorithm can correctly label the pictures.
+                </section>
+                
+                <section>
+                    <img data-src="img/Theme_Park.jpg"/>
+                    <aside class="notes">
+                        So let's explore how we take that first step from having a problem to having data.  Let's say you own an amusement park and you notice that some days you have a high number of visitors to your park and on other days you only have a few.  You know it's good for customer satisfaction and the bottom line to have more employees selling souvenirs and food when the park is busy, but if you have the park fully staffed when the number of customers is low, you aren't able to turn a profit because your payroll cost is too high.  Wouldn't it be great if you could predict if you were going to have many or few customers on any given day?
+                        
+                        What information do you think you could use to predict park attendance?
+                    </aside>
+                </section>
+                
+                <section>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Sample Value</th>
+                                <th>Issues</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="fragment" data-fragment-index="0">
+                                <td>Outlook</td>
+                                <td>Partly Cloudy</td>
+                                <td>Non-numeric</td>
+                            </tr>
+                            <tr class="fragment" data-fragment-index="1">
+                                <td>Temperature</td>
+                                <td>25°C</td>
+                                <td>Continuous</td>
+                            </tr>
+                            <tr class="fragment" data-fragment-index="2">
+                                <td>Humidity</td>
+                                <td>95%, 25g/m³</td>
+                                <td>Usefulness?</td>
+                            </tr>
+                            <tr class="fragment" data-fragment-index="3">
+                                <td>Atmospheric Pressure</td>
+                                <td>1016mb/hPa, 14.7psi, 30in. Hg, 762.1mmHg/Torr</td>
+                                <td>Units, More useful as a change over time (Δ) </td>
+                            </tr>
+                            <tr class="fragment" data-fragment-index="4">
+                                <td>Dew Point</td>
+                                <td>17°C</td>
+                                <td>Tight correlation to other features</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">
+                        For this example, let's focus on the weather forecast.  On any given day, a forecast is made up of all kinds of different information.  In data science, we call each piece of information for a given record a feature.  Now we'll look at some potential features that we can extract from a weather forecast and talk about some of the issues you might find when you put together a data set.
+                        
+                        1. Sometimes your data is qualitative like a daily outlook.  Algorithms almost always iterate over quantitative data, so this "text" needs to be converted to a numeric value to be of any use, but that task is usually quite difficult.  You will often run into issues with inconsistent capitalization, typos, and other language processing problems.
+                        
+                        2. Temperature, great, a numeric feature!  However, temperature is what we call a continuous feature.  All that means is that this feature exists on a continuum.  The temperature can be anywere from absolute zero to infinity.  The other type of variable is called a discrete variable - that's a variable that can only hold one of a number of preset values like 0, 1, or 2.  Continuous variables can be an issue for your model because typically when training your model, there will be very few data points with very high or very low values.  This leads to your model not being very good when a continuous variable is at an extreme. To solve this issue there are a few strategies.  For one, you can divide your data into "bins."  Another solution, especially when the value is between 0 and positive infinity, is to divide them all by the largest value (that isn't an outlier), which effectively scales them all between 0 and 1.  This is called "normalizing" the feature.
+                        
+                        3.  Humidity here is an example of a normalized feature.  You can see the absolute value, there on the right, which actually measures how much water is present in the air.  You rarely see that in a forecast, though; you see the relative humidity, which is the absolute humidity divided by the maximum value it could be for the current temperature.  For this feature, I claim that it maybe isn't very useful to measure.  Sure, some people look at the humidity when they read a weather forecast, but I'd say not many people use it to decide whether or not to go to my park.  This is something I could test by looking at the correlation between humidity and park attendance.
+                        
+                        4.  Atmospheric pressure is a perfect example of a feature that can come in many different units.  Sometimes your data comes from multiple sources (weather stations, for example) and you'll need to convert some of your data so all your instances are in the same units.  Pressure also demonstrates where that "Expertise" section of that venn diagram comes from.  If you do a little research into weather science, you will find that when pressure falls, weather tends to worsen and when it rises, weather improves.  So instead of the literal pressure value, maybe we want our feature to be the change or "delta" +/- from the day before.
+                        
+                        5.  Without looking it up online, does anyone actually know what the dew point is?  (It's the temperature at which water evaporates at the same rate that it condenses.  It turns out, dew point can actually be calculated from the temperature and pressure!  So you might have more features, but you actually don't have any additional information.  As long has you have both temperature and pressure, adding dew point as a feature will not improve your model.
+                    </aside>
+                </section>
                 
                 <section>
 					<table>
