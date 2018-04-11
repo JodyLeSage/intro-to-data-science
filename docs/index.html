@@ -82,7 +82,7 @@
                             </tr>
                             <tr class="fragment" data-fragment-index="2">
                                 <td>Humidity</td>
-                                <td>95%, 25g/m³</td>
+                                <td>25g/m³, 95%</td>
                                 <td>Usefulness?</td>
                             </tr>
                             <tr class="fragment" data-fragment-index="3">
@@ -102,7 +102,7 @@
                         
                         1. Sometimes your data is qualitative like a daily outlook.  Algorithms almost always iterate over quantitative data, so this "text" needs to be converted to a numeric value to be of any use, but that task is usually quite difficult.  You will often run into issues with inconsistent capitalization, typos, and other language processing problems.
                         
-                        2. Temperature, great, a numeric feature!  However, temperature is what we call a continuous feature.  All that means is that this feature exists on a continuum.  The temperature can be anywere from absolute zero to infinity.  The other type of variable is called a discrete variable - that's a variable that can only hold one of a number of preset values like 0, 1, or 2.  Continuous variables can be an issue for your model because typically when training your model, there will be very few data points with very high or very low values.  This leads to your model not being very good when a continuous variable is at an extreme. To solve this issue there are a few strategies.  For one, you can divide your data into "bins."  Another solution, especially when the value is between 0 and positive infinity, is to divide them all by the largest value (that isn't an outlier), which effectively scales them all between 0 and 1.  This is called "normalizing" the feature.
+                        2. Temperature, great, a numeric feature!  However, temperature is what we call a continuous feature.  All that means is that this feature exists on a continuum.  The temperature can be anywere from absolute zero to infinity.  The other type of variable is called a discrete variable - that's a variable that can only hold one of a number of preset values like 0, 1, or 2.  Continuous variables can be an issue for your model because typically when training your model, there will be very few data points with very high or very low values.  This leads to your model not performing very well when a continuous variable is at an extreme value. To solve this issue there are a few strategies.  For one, you can divide your data into "bins."  Another solution, especially when the value is between 0 and positive infinity, is to divide them all by the largest value (that isn't an outlier), which effectively scales them all between 0 and 1.  This is called "normalizing" the feature.
                         
                         3.  Humidity here is an example of a normalized feature.  You can see the absolute value, there on the right, which actually measures how much water is present in the air.  You rarely see that in a forecast, though; you see the relative humidity, which is the absolute humidity divided by the maximum value it could be for the current temperature.  For this feature, I claim that it maybe isn't very useful to measure.  Sure, some people look at the humidity when they read a weather forecast, but I'd say not many people use it to decide whether or not to go to my park.  This is something I could test by looking at the correlation between humidity and park attendance.
                         
@@ -185,6 +185,7 @@
                         </tbody>
                     </table>
                     <aside class="notes">
+                        Explain techniques for filling in missing information:
                         wind (mode), temp (historical mean), labels (other dataset), windy (extract meaning), pressure (derived features), outliers
                     </aside>
                 </section>
